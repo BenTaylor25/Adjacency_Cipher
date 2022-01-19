@@ -55,35 +55,57 @@ def valid_rnd_shift(char):
 
 num_of_valid_vals = lambda sft : 25 - abs(sft)
 
-def create():
-    message = get_message()
+def get_valid_vals(shift, char, novv):
+    if shift < 0:
+        valid_vals = [chr(x) for x in range(65, ord(char)+shift)]
+        remaining = novv - len(valid_vals)
+        valid_vals += [chr(x) for x in range(ord(char)+shift+1, ord(char)+shift+1+remaining)]
+    else:
+        valid_vals = [chr(x) for x in range(65+shift, ord(char)+shift)]
+        valid_vals += [chr(x) for x in range(ord(char)+shift+1, 91)]
+    
+    return valid_vals
+
+def encrypt_message(message):
+    code = ""
     for char in message:
         shift = valid_rnd_shift(char)
         novv = num_of_valid_vals(shift)
-        if shift < 0:
-            valid_vals = [chr(x) for x in range(65, ord(char))]
-            remaining = novv - len(valid_vals)
-            valid_vals += [chr(x) for x in range(ord(char)+1, ord(char)+remaining+1)]
-        else:
-            valid_vals = [chr(x) for x in range(65+shift, ord(char))]
-            valid_vals = [chr(x) for x in range(ord(char)+1, 91)]
+        valid_vals = get_valid_vals(shift, char, novv)
 
-        hint_char =  rch(valid_vals)
-        print(valid_vals, len(valid_vals), shift)
+        hint_key =  rch(valid_vals)
+        hint_char = chr(ord(hint_key)-shift)
+        ans_key = chr(ord(char)+shift)
+
+        code += f"{hint_key}{hint_char}{ans_key} "
+        #print(valid_vals, len(valid_vals), shift)
+
+    return code.strip()
+
+def create():
+    message = get_message()
+    print(encrypt_message(message))
 
 
-
+def secret_test():
+    print("\n## SECRET TEST ##")
+    message = get_message()
+    print("".join(list(map(code_to_char, encrypt_message(message).split()))))
 
 def main():
     while True:
-        if (mode := input("('s':solve, 'c':create  -->)").lower()) == 's':   # repeat until
+        if (mode := input("('s':solve, 'c':create  -->)").lower()) == 's':
             solve()
-            break
-        elif mode == 'c':   # or
+        elif mode == 'c':
             create()
-            break
-        else:
+        elif mode == '_t':
+            secret_test()
+        else:   # repeat until not
             print(f"The input '{mode}' is not valid")
+            continue
+
+        if not input():
+            break
 
 
 if __name__ == '__main__':
