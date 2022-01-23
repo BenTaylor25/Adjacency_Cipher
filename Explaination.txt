@@ -1,0 +1,14 @@
+Shortly before creating this program, I played a problem solving game with my family.
+One of the puzzles involved 2 pieces of paper with the alphabet virtically on both.
+[In context, the puzzle refered to an Elevator, hense the "Elevator question" comment].
+Along with the paper, you have several tiles, with a letter pairing and another letter.
+For example, you might have J=L, Q.
+To solve the puzzle, you would need to match up the key values on the paper (J:L), and look what the 3rd letter corresponds to.
+
+           v      v
+  ABCDEFGHIJKLMNOPQRSTUVWXYZ
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+In the example, the Q lines up with S, so this tile would have a value of S.
+
+After solving Every tile, you are left with 5-digit number which is used as a code.
